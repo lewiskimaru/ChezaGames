@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheza Games</title>
+  <style>
+    body {
+      background: #001f3f; /* Dark bluish background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: 'Arial', sans-serif;
+    }
+
+    nav {
+      background-color: #003366; /* Stylish navy blue */
+      padding: 10px;
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: #ffc107; /* Yellow on hover */
+    }
+
+    .profile-container {
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    #user-profile,
+    #game-history,
+    #friend-rankings {
+      flex: 1;
+      max-width: 300px;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 0 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Snake</a>
+    <a href="#">Pong</a>
+    <a href="#">Sokoban</a>
+    <a href="#">Tetris</a>
+  </nav>
+
+  <div class="profile-container">
+    <div id="user-profile">
+      <h2>User Profile</h2>
+      <p><strong>Name:</strong> John Doe</p>
+      <p><strong>Email:</strong> john@example.com</p>
+      <p><strong>Username:</strong> johndoe123</p>
+    </div>
+
+    <div id="game-history">
+      <h2>Game History</h2>
+      <p><strong>Snake:</strong> Score: 120</p>
+      <p><strong>Pong:</strong> Score: 350</p>
+      <p><strong>Sokoban:</strong> Level: 5</p>
+      <p><strong>Tetris:</strong> Lines: 150</p>
+    </div>
+
+    <div id="friend-rankings">
+      <h2>Friend Rankings</h2>
+      <p><strong>1. Friend 1</strong> - Snake: 150, Pong: 300</p>
+      <p><strong>2. Friend 2</strong> - Snake: 120, Pong: 280</p>
+      <p><strong>3. Friend 3</strong> - Snake: 100, Pong: 250</p>
+    </div>
+  </div>
+</body>
+</html>
