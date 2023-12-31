@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cheza Games</title>
+  <title>Game Hub</title>
   <style>
     body {
       background: #001f3f; /* Dark bluish background color */
@@ -25,8 +25,6 @@
       position: fixed;
       top: 0;
       z-index: 1000;
-      display: flex;
-      justify-content: center;
     }
 
     nav a {
@@ -42,22 +40,36 @@
       color: #ffc107; /* Yellow on hover */
     }
 
-    .profile-container {
-      margin-top: 60px;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
+    canvas {
+      border: 1px solid white;
+      border-radius: 10px; /* Rounded corners */
+      margin-top: 50px;
     }
 
-    #user-profile,
-    #game-history,
-    #friend-rankings {
-      flex: 1;
-      max-width: 300px;
-      border: 2px solid white;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 0 10px 20px;
+    #score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    #level-buttons {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    #level-buttons button {
+      margin-right: 10px;
+    }
+
+    #highest-score {
+      font-weight: bold;
+    }
+
+    #game-over-message {
+      font-size: 24px;
+      margin-top: 10px;
+      display: none;
     }
   </style>
 </head>
@@ -69,29 +81,187 @@
     <a href="#">Sokoban</a>
     <a href="#">Tetris</a>
   </nav>
-
-  <div class="profile-container">
-    <div id="user-profile">
-      <h2>User Profile</h2>
-      <p><strong>Name:</strong> John Doe</p>
-      <p><strong>Email:</strong> john@example.com</p>
-      <p><strong>Username:</strong> johndoe123</p>
-    </div>
-
-    <div id="game-history">
-      <h2>Game History</h2>
-      <p><strong>Snake:</strong> Score: 120</p>
-      <p><strong>Pong:</strong> Score: 350</p>
-      <p><strong>Sokoban:</strong> Level: 5</p>
-      <p><strong>Tetris:</strong> Lines: 150</p>
-    </div>
-
-    <div id="friend-rankings">
-      <h2>Friend Rankings</h2>
-      <p><strong>1. Friend 1</strong> - Snake: 150, Pong: 300</p>
-      <p><strong>2. Friend 2</strong> - Snake: 120, Pong: 280</p>
-      <p><strong>3. Friend 3</strong> - Snake: 100, Pong: 250</p>
-    </div>
+  <div id="level-buttons">
+    <button onclick="setLevel('easy')">Easy</button>
+    <button onclick="setLevel('medium')">Medium</button>
+    <button onclick="setLevel('hard')">Hard</button>
   </div>
+  <canvas width="400" height="400" id="game"></canvas>
+  <div id="score">
+    <span>Current Score: <span id="current-score">0</span></span>
+    <span>Highest Score: <span id="highest-score">0</span></span>
+  </div>
+  <div id="game-over-message">Game Over! Press Space Bar to Play Again</div>
+
+  <script>
+    var canvas = document.getElementById('game');
+    var context = canvas.getContext('2d');
+
+    var grid = 16;
+    var count = 0;
+
+    var snake = {
+      x: 160,
+      y: 160,
+      dx: grid,
+      dy: 0,
+      cells: [],
+      maxCells: 4
+    };
+
+    var apple = {
+      x: 320,
+      y: 320
+    };
+
+    var level = "easy";
+    var currentScore = 0;
+    var highestScore = 0;
+    var gameOver = false;
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function updateScore() {
+      document.getElementById('current-score').innerHTML = currentScore;
+      document.getElementById('highest-score').innerHTML = highestScore;
+    }
+
+    function showGameOverMessage() {
+      document.getElementById('game-over-message').style.display = 'block';
+    }
+
+    function hideGameOverMessage() {
+      document.getElementById('game-over-message').style.display = 'none';
+    }
+
+    function loop() {
+      if (gameOver) {
+        showGameOverMessage();
+        return;
+      }
+
+      requestAnimationFrame(loop);
+
+      var speed = level === "easy" ? 12 : level === "medium" ? 16 : 20;
+
+      if (++count < speed) {
+        return;
+      }
+
+      count = 0;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      snake.x += snake.dx;
+      snake.y += snake.dy;
+
+      if (snake.x < 0) {
+        snake.x = canvas.width - grid;
+      } else if (snake.x >= canvas.width) {
+        snake.x = 0;
+      }
+
+      if (snake.y < 0) {
+        snake.y = canvas.height - grid;
+      } else if (snake.y >= canvas.height) {
+        snake.y = 0;
+      }
+
+      snake.cells.unshift({ x: snake.x, y: snake.y });
+
+      if (snake.cells.length > snake.maxCells) {
+        snake.cells.pop();
+      }
+
+      context.fillStyle = 'red';
+      context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+
+      context.fillStyle = 'green';
+      snake.cells.forEach(function (cell, index) {
+        context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
+        if (cell.x === apple.x && cell.y === apple.y) {
+          snake.maxCells++;
+          currentScore++;
+
+          if (currentScore > highestScore) {
+            highestScore = currentScore;
+          }
+
+          apple.x = getRandomInt(0, 25) * grid;
+          apple.y = getRandomInt(0, 25) * grid;
+
+          updateScore();
+        }
+
+        for (var i = index + 1; i < snake.cells.length; i++) {
+          if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+            snake.x = 160;
+            snake.y = 160;
+            snake.cells = [];
+            snake.maxCells = 4;
+            snake.dx = grid;
+            snake.dy = 0;
+
+            apple.x = getRandomInt(0, 25) * grid;
+            apple.y = getRandomInt(0, 25) * grid;
+
+            currentScore = 0;
+            updateScore();
+
+            gameOver = true;
+            showGameOverMessage();
+          }
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.which === 37 && snake.dx === 0) {
+        snake.dx = -grid;
+        snake.dy = 0;
+      } else if (e.which === 38 && snake.dy === 0) {
+        snake.dy = -grid;
+        snake.dx = 0;
+      } else if (e.which === 39 && snake.dx === 0) {
+        snake.dx = grid;
+        snake.dy = 0;
+      } else if (e.which === 40 && snake.dy === 0) {
+        snake.dy = grid;
+        snake.dx = 0;
+      } else if (e.which === 32 && gameOver) {
+        resetGame();
+        hideGameOverMessage();
+      }
+    });
+
+    function setLevel(newLevel) {
+      level = newLevel;
+
+      snake.x = 160;
+      snake.y = 160;
+      snake.cells = [];
+      snake.maxCells = 4;
+      snake.dx = grid;
+      snake.dy = 0;
+
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+
+      currentScore = 0;
+      updateScore();
+
+      gameOver = false;
+
+      requestAnimationFrame(loop);
+    }
+
+    function resetGame() {
+      setLevel(level);
+    }
+
+    setLevel("easy");
+  </script>
 </body>
 </html>
