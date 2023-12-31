@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Hub</title>
+  <style>
+    body {
+      background: #001f3f; /* Dark bluish background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: 'Arial', sans-serif;
+    }
+
+    nav {
+      background-color: #003366; /* Stylish navy blue */
+      padding: 10px;
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: #ffc107; /* Yellow on hover */
+    }
+
+    canvas {
+      border: 1px solid white;
+      border-radius: 10px; /* Rounded corners */
+      margin-top: 50px;
+    }
+
+    #score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    #level-buttons {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    #level-buttons button {
+      margin-right: 10px;
+    }
+
+    #highest-score {
+      font-weight: bold;
+    }
+
+    #game-over-message {
+      font-size: 24px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Snake</a>
+    <a href="#">Pong</a>
+    <a href="#">Sokoban</a>
+    <a href="#">Tetris</a>
+  </nav>
+  <div id="level-buttons">
+    <button onclick="setLevel('easy')">Easy</button>
+    <button onclick="setLevel('medium')">Medium</button>
+    <button onclick="setLevel('hard')">Hard</button>
+  </div>
+  <canvas width="400" height="400" id="game"></canvas>
+  <div id="score">
+    <span>Current Score: <span id="current-score">0</span></span>
+    <span>Highest Score: <span id="highest-score">0</span></span>
+  </div>
+  <div id="game-over-message">Game Over! Press Space Bar to Play Again</div>
+
+  <script>
+    var canvas = document.getElementById('game');
+    var context = canvas.getContext('2d');
+
+    var grid = 16;
+    var count = 0;
+
+    var snake = {
+      x: 160,
+      y: 160,
+      dx: grid,
+      dy: 0,
+      cells: [],
+      maxCells: 4
+    };
+
+    var apple = {
+      x: 320,
+      y: 320
+    };
+
+    var level = "easy";
+    var currentScore = 0;
+    var highestScore = 0;
+    var gameOver = false;
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function updateScore() {
+      document.getElementById('current-score').innerHTML = currentScore;
+      document.getElementById('highest-score').innerHTML = highestScore;
+    }
+
+    function showGameOverMessage() {
+      document.getElementById('game-over-message').style.display = 'block';
+    }
+
+    function hideGameOverMessage() {
+      document.getElementById('game-over-message').style.display = 'none';
+    }
+
+    function loop() {
+      if (gameOver) {
+        showGameOverMessage();
+        return;
+      }
+
+      requestAnimationFrame(loop);
+
+      var speed = level === "easy" ? 12 : level === "medium" ? 16 : 20;
+
+      if (++count < speed) {
+        return;
+      }
+
+      count = 0;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      snake.x += snake.dx;
+      snake.y += snake.dy;
+
+      if (snake.x < 0) {
+        snake.x = canvas.width - grid;
+      } else if (snake.x >= canvas.width) {
+        snake.x = 0;
+      }
+
+      if (snake.y < 0) {
+        snake.y = canvas.height - grid;
+      } else if (snake.y >= canvas.height) {
+        snake.y = 0;
+      }
+
+      snake.cells.unshift({ x: snake.x, y: snake.y });
+
+      if (snake.cells.length > snake.maxCells) {
+        snake.cells.pop();
+      }
+
+      context.fillStyle = 'red';
+      context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+
+      context.fillStyle = 'green';
+      snake.cells.forEach(function (cell, index) {
+        context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
+        if (cell.x === apple.x && cell.y === apple.y) {
+          snake.maxCells++;
+          currentScore++;
+
+          if (currentScore > highestScore) {
+            highestScore = currentScore;
+          }
+
+          apple.x = getRandomInt(0, 25) * grid;
+          apple.y = getRandomInt(0, 25) * grid;
+
+          updateScore();
+        }
+
+        for (var i = index + 1; i < snake.cells.length; i++) {
+          if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+            snake.x = 160;
+            snake.y = 160;
+            snake.cells = [];
+            snake.maxCells = 4;
+            snake.dx = grid;
+            snake.dy = 0;
+
+            apple.x = getRandomInt(0, 25) * grid;
+            apple.y = getRandomInt(0, 25) * grid;
+
+            currentScore = 0;
+            updateScore();
+
+            gameOver = true;
+            showGameOverMessage();
+          }
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.which === 37 && snake.dx === 0) {
+        snake.dx = -grid;
+        snake.dy = 0;
+      } else if (e.which === 38 && snake.dy === 0) {
+        snake.dy = -grid;
+        snake.dx = 0;
+      } else if (e.which === 39 && snake.dx === 0) {
+        snake.dx = grid;
+        snake.dy = 0;
+      } else if (e.which === 40 && snake.dy === 0) {
+        snake.dy = grid;
+        snake.dx = 0;
+      } else if (e.which === 32 && gameOver) {
+        resetGame();
+        hideGameOverMessage();
+      }
+    });
+
+    function setLevel(newLevel) {
+      level = newLevel;
+
+      snake.x = 160;
+      snake.y = 160;
+      snake.cells = [];
+      snake.maxCells = 4;
+      snake.dx = grid;
+      snake.dy = 0;
+
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+
+      currentScore = 0;
+      updateScore();
+
+      gameOver = false;
+
+      requestAnimationFrame(loop);
+    }
+
+    function resetGame() {
+      setLevel(level);
+    }
+
+    setLevel("easy");
+  </script>
+</body>
+</html>
