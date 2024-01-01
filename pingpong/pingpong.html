@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+    <link rel="stylesheet" href="../pingpong.css">
+    <style>
+    body {
+      background: #001f3f; /* Dark bluish background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: 'Arial', sans-serif;
+    }
+
+    nav {
+      background-color: #003366; /* Stylish navy blue */
+      padding: 10px;
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: #ffc107; /* Yellow on hover */
+    }
+
+    .profile-container {
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+   </style>
+</head>
+<body>
+    <nav>
+    <a href="../index.html">Home</a>
+    <a href="../snake/snake.html">Snake</a>
+    <a href="../tetris/tetris.html">Tetris</a>
+    <a href="../pong/pong.html">Pong</a>
+    <a href="../sokoban/sokoban.html">Sokoban</a>
+  </nav>
+
+    <script src="../pingpong.js"></script>
+</body>
+</html>
