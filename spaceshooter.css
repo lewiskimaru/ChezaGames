@@ -1,5 +1,5 @@
 body {
-    background: url("resources/spaceshooter.jpg");
+    background: #345995; /* Bluish background color */
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
