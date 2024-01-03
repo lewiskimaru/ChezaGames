@@ -13,7 +13,7 @@
 /**
  * Main Styles
  */
-html, body {
+html{
 	background: #345995;    
     backface-visibility: hidden;
 }
