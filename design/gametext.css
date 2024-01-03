@@ -13,10 +13,6 @@
 /**
  * Main Styles
  */
-html{
-	background: #345995;    
-    backface-visibility: hidden;
-}
 
 nav {
   background-color: #003366;
