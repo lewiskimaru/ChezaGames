@@ -26,6 +26,7 @@ canvas {
   justify-content: center;
   align-items: center;
   color: whitesmoke;
+  font-family: "Courier New", Courier, monospace;
 }
 
 button {
