@@ -8,8 +8,19 @@
   <link rel="stylesheet" href="design/gametext.css" />
   
   <style>
+    body {
+      background: #001f3f; /* Dark bluish background color */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
+
     .profile-container {
-      margin-top: 100px;
+      margin-top: 60px;
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
@@ -40,14 +51,14 @@
 
   <div class="profile-container">
     <div id="user-profile">
-      <h2>Profile</h2>
+      <h2>User Profile</h2>
       <p><strong>Name:</strong> John Doe</p>
       <p><strong>Email:</strong> john@example.com</p>
       <p><strong>Username:</strong> johndoe123</p>
     </div>
 
     <div id="game-history">
-      <h2>History</h2>
+      <h2>Game History</h2>
       <p><strong>Snake:</strong> Score: 120</p>
       <p><strong>Pong:</strong> Score: 350</p>
       <p><strong>Sokoban:</strong> Level: 5</p>
@@ -55,7 +66,7 @@
     </div>
 
     <div id="friend-rankings">
-      <h2>Rankings</h2>
+      <h2>Friend Rankings</h2>
       <p><strong>1. Friend 1</strong> - Snake: 150, Pong: 300</p>
       <p><strong>2. Friend 2</strong> - Snake: 120, Pong: 280</p>
       <p><strong>3. Friend 3</strong> - Snake: 100, Pong: 250</p>
