@@ -20,19 +20,6 @@ nav {
   justify-content: center; /* Center the navigation items horizontally */
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 18px;
-  font-weight: bold;
-  transition: color 0.3s ease-in-out;
-}
-
-nav a:hover {
-  color: #ffc107;
-}
-
 #tetris {
   width: 360px;
   margin: 55px auto; /* Center the game */
