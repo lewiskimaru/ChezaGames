@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         count+=10;
         let s = Math.floor((count / 1000));
         timer.innerHTML = s;
-        if (s >= 90) {
+        if (s >= 30) {
           clearInterval(intervalRef);
           timeUp();
         }
