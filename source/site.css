@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    background: #001f3f;
+    font-family: Helvetica, Georgia, Consolas;
+}
+a,
+a:hover,
+a:active,
+a:focus {
+    color: white;
+}
+.header {
+    width: 100%;
+    height: 200px;
+    background: #3498db;
+    color: white;
+}
+.header .container {
+    padding: 10px 0;
+}
+.container {
+    width: 980px;
+    margin: 0 auto;
+}
+#game-iframe {
+    width: 320px;
+    height: 480px;
+    position: relative;
+    left: 330px;
+}
+#adsense-iframe {
+    width: 100%;
+}
+#fork-me {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
