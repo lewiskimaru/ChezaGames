@@ -19,8 +19,8 @@ a:focus {
     padding: 10px 0;
 }
 .container {
+    margin: 60px auto;
     width: 980px;
-    margin: 0 auto;
 }
 #game-iframe {
     width: 320px;
