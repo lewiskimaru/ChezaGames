@@ -36,6 +36,10 @@ nav a:hover {
   color: #ffc107;
 }
 
+nav a:active {
+  color: #eb34de;
+}
+
 html, body, input {
 	font-family: "Whimsy TT";
 	font-size: 12px;
